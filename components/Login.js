@@ -23,7 +23,8 @@ export default function SignIn() {
 
     async function getToken(userId) {
         const response = await axios.get(
-            `https://gari-sdk-front-end.vercel.app/api/login?userId=${userId}`
+            // `https://gari-sdk-front-end.vercel.app/api/login?userId=${userId}`
+            `/api/login?userId=${userId}`
         );
         console.log("response", response.data);
         return response.data;
@@ -37,7 +38,7 @@ export default function SignIn() {
       const airdropAmount = 1;
 
       const airdropResponse = await axios.post(
-        `https://gari-sdk-front-end.vercel.app/api/airdrop`,
+        `/api/airdrop`,
           {
           headers: {
             token,
@@ -99,7 +100,7 @@ export default function SignIn() {
             const airdropAmount = 1;
 
             const airdropResponse = await axios.post(
-                `https://gari-sdk-front-end.vercel.app/api/airdrop`,
+                `/api/airdrop`,
                 {
                     headers: {
                         token,
