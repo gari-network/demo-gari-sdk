@@ -1,0 +1,43 @@
+{
+  "homepage": "http://akshaycodeb.github.io/next-mui-starter",
+  "name": "next-mui-starter",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
+    "@mui/material": "^5.10.11",
+    "@solana/spl-token": "^0.1.8",
+    "@solana/web3.js": "^1.66.2",
+    "@toruslabs/openlogin-ed25519": "^2.0.0",
+    "@web3auth/base": "^3.0.4",
+    "@web3auth/core": "^3.0.0",
+    "@web3auth/openlogin-adapter": "^3.0.3",
+    "@web3auth/solana-provider": "^3.0.3",
+    "axios": "^1.1.3",
+    "gari": "^1.0.1",
+    "gari-sdk": "^1.0.40",
+    "jsonwebtoken": "^8.5.1",
+    "jwk-to-pem": "^2.0.5",
+    "lodash": "^4.17.21",
+    "mongo-objectid": "^1.2.2",
+    "next": "13.0.0",
+    "node-jose": "^2.1.1",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-loading": "^2.0.3"
+  },
+  "devDependencies": {
+    "eslint": "8.26.0",
+    "eslint-config-next": "13.0.0",
+    "gh-pages": "^4.0.0"
+  }
+}
