@@ -19,7 +19,6 @@ export default function SignIn() {
     const [isLoading, setLoading] = useState(false);
 
     const gariClientId = "0319a8fc-b289-4a28-92f9-22ae141bd477";
-    const gariSecretKey = "abcd";
 
     async function getToken(userId) {
         const response = await axios.get(
@@ -135,7 +134,7 @@ export default function SignIn() {
     useEffect(() => {
 
         console.log(`gariSdk version ${gariSdk.packageVersion()}`);
-        gariSdk.sdkInitialize(gariClientId, gariSecretKey);
+        gariSdk.sdkInitialize(gariClientId);
     }, []);
 
     return token ? (
