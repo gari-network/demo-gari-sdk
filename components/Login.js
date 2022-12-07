@@ -133,6 +133,8 @@ export default function SignIn() {
     }
 
     useEffect(() => {
+
+        console.log(`gariSdk version ${gariSdk.packageVersion()}`);
         gariSdk.sdkInitialize(gariClientId, gariSecretKey);
     }, []);
 
