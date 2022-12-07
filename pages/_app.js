@@ -1,7 +1,9 @@
+import * as React from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { AuthProvider } from '../AuthContext';
 import Navbar from '../components/Navbar';
 import '../styles/globals.css';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 // const theme = createTheme({
 //   palette: {
