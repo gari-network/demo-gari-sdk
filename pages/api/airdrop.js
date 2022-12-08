@@ -10,9 +10,9 @@ const fromWalletPrivateKey =
 const fromWalletPublicKey=`FbD1J7ptwgSD8eCsyEm2TDVLnFwVhYRWkc2ingf6mn1n`
 
 export default async function handler(req, res) {
-  const publicKey = req.body.headers.publicKey;
-  const token = req.body.headers.token;
-  const airdropAmount = req.body.headers.airdropAmount;
+  const publicKey = req.body.publicKey;
+  const token = req.headers.token;
+  const airdropAmount = req.body.airdropAmount;
 
   gariSdk.sdkInitialize(gariClientId, gariSecretKey)
   
