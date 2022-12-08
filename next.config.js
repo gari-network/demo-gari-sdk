@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
+  // making this false since when this is true, home component is rendering twice
+  reactStrictMode: false,
   swcMinify: true,
   // env: {
   //   URL: 'http://localhost:5001',
