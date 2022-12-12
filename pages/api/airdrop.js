@@ -22,5 +22,5 @@ export default async function handler(req, res) {
     fromWalletPrivateKey
   );
 
-  return signature;
+  res.json(signature);
 }
