@@ -1,4 +1,4 @@
-## Description
+## Descriptions
 This is demo application for clients who wants to use "gari" npm package.
 
 This application demos below functionalities:
