@@ -5,8 +5,6 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useAuthContext } from "../AuthContext";
 import ReactLoading from "react-loading";
-// const gariSdk = require('gari-sdk')
-// import * as gariSdk from "gari-sdk";
 import * as gariSdk from "gari";
 
 export default function SignIn() {
@@ -22,8 +20,8 @@ export default function SignIn() {
 
   async function getToken(userId) {
     const response = await axios.get(
-      // `https://gari-sdk-front-end.vercel.app/api/login?userId=${userId}`
-      `/api/login?userId=${userId}`
+       `https://demo-gari-sdk.vercel.app/api/login?userId=${userId}`
+      // `/api/login?userId=${userId}`
     );
     console.log("response", response.data);
     return response.data;

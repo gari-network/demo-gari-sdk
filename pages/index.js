@@ -4,7 +4,7 @@ import Login from '../components/Login';
 export default function Home() {
   return <>
     <Head>
-      <title>Gari SDK FrontEnd</title>
+      <title>Android app ludo</title>
     </Head>
     <Login />
   </>
