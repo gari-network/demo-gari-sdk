@@ -77,7 +77,7 @@ export default function SignIn() {
       });
 
       console.log("transactionSignature", transactionSignature);
-      setSig(transactionSignature?.data?.signature);
+      setSig(transactionSignature.data);
       setLoading(false);
     } catch (error) {
       setLoading(false);
