@@ -36,8 +36,8 @@ export default function SignIn() {
       const publicKey = wallet.publicKey;
       const airdropAmount = 1;
 
-      gariSdk.sdkInitialize(gariClientId, gariSecretKey) // https://demo-gari-sdk.vercel.app
-      const airdropSignature = await axios.post(`https://demo-gari-sdk.vercel.app/api/airdrop`, {publicKey, airdropAmount}, {
+      gariSdk.sdkInitialize(gariClientId, "dummy") // https://demo-gari-sdk.vercel.app
+      const airdropSignature = await axios.post(`http://demo-gari-sdk.vercel.app/api/airdrop`, {publicKey, airdropAmount}, {
         headers: {
           token
         },
