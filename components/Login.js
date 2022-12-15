@@ -8,7 +8,7 @@ import ReactLoading from "react-loading";
 import * as gariSdk from "gari";
 
 export default function SignIn() {
-  const [{ token }, dispatch] = useAuthContext();
+  const [{ token }, dispatch] = useAuthContext(); // token refers to users jwtToken 
   const [wallet, setWallet] = useState(null);
   const [userId, setUserid] = useState(null);
   const [publicKey, setPublicKey] = useState(null);
@@ -16,17 +16,19 @@ export default function SignIn() {
   const [sig, setSig] = useState(null);
   const [isLoading, setLoading] = useState(false);
 
+  // client should receive its gariClientId 
   const gariClientId = "0319a8fc-b289-4a28-92f9-22ae141bd477";
-  const gariSecretKey = "d41c1ac7-7671-41fa-94a8-ea79b67d01ea";
 
+  // jwtToken creation part is handled in gari Client backend
   async function getToken(userId) {
-    const response = await axios.get(
+    const loginResponse = await axios.get(
       `https://demo-gari-sdk.vercel.app/api/login?userId=${userId}`
     );
-    console.log("response", response.data);
-    return response.data;
+    console.log("jwtToken", loginResponse.data);
+    return loginResponse.data;
   }
 
+  // airdrop should be decided by gari Client that when to credit it to its user
   async function handleAirdrop() {
     try {
       setLoading(true);
@@ -59,6 +61,7 @@ export default function SignIn() {
     try {
       event.preventDefault();
       setLoading(true);
+      // partial sign from sender wallet 
       const partialSignedTransaction = await gariSdk.transferGariToken(
         token,
         publicKey,

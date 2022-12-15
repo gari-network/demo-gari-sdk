@@ -16,8 +16,6 @@ export default async function handler(req, res) {
   const payload = JSON.stringify({
     exp: Math.floor((Date.now() + ms("1d")) / 1000),
     iat: Math.floor(Date.now() / 1000),
-    // sub: "gari-sdk-customVerifier" ,
-    // sub: "new-verifier",
     sub: "pubg-game-verifier",
     // id: id.hex,
     uid: userId,
