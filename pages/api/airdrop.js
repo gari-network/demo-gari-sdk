@@ -1,6 +1,6 @@
 import * as gariSdk from "gari";
 
-const gariClientId = "0319a8fc-b289-4a28-92f9-22ae141bd477";
+const gariClientId = "d8817deb-dceb-40a4-a890-21f0286c8fba";
 const gariSecretKey = "d41c1ac7-7671-41fa-94a8-ea79b67d01ea";
 
 // this wallet is clients wallet, below demo wallet has some garis of devnet for testing purpose

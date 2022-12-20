@@ -17,6 +17,7 @@ export default async function handler(req, res) {
     exp: Math.floor((Date.now() + ms("1d")) / 1000),
     iat: Math.floor(Date.now() / 1000),
     sub: "pubg-game-verifier",
+    appName : "ludoKing",             // appName : e.g ludo (should be provided by client itself during jwtToken generation of particular user)
     // id: id.hex,
     uid: userId,
   });

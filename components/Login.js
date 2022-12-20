@@ -17,7 +17,7 @@ export default function SignIn() {
   const [isLoading, setLoading] = useState(false);
 
   // client should receive its gariClientId 
-  const gariClientId = "0319a8fc-b289-4a28-92f9-22ae141bd477";
+  const gariClientId = "d8817deb-dceb-40a4-a890-21f0286c8fba";
 
   // jwtToken creation part is handled in gari Client backend
   async function getToken(userId) {
@@ -36,8 +36,8 @@ export default function SignIn() {
       const publicKey = wallet.publicKey;
       const airdropAmount = 1;
 
-      gariSdk.sdkInitialize(gariClientId, "dummy") // https://demo-gari-sdk.vercel.app
-      const airdropSignature = await axios.post(`http://demo-gari-sdk.vercel.app/api/airdrop`, {publicKey, airdropAmount}, {
+      gariSdk.sdkInitialize(gariClientId) // https://demo-gari-sdk.vercel.app
+      const airdropSignature = await axios.post(`https://demo-gari-sdk.vercel.app/api/airdrop`, {publicKey, airdropAmount}, {
         headers: {
           token
         },
