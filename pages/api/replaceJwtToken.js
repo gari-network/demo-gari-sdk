@@ -14,6 +14,10 @@ export default async function handler(req, res) {
   // decode jwt token 
   const decoded = jwt.decode(token, { complete: true });
   const userId = decoded.payload.uid;
+  if(!userId) 
+  {
+    return res.status(400).send("Please pass userId in token ");
+  }
 
   // ! important: Please create your own keys
   const JWKeys = fs.readFileSync("keys.json");
