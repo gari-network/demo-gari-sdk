@@ -8,7 +8,7 @@ import ReactLoading from "react-loading";
 import * as gariSdk from "gari";
 
 export default function SignIn() {
-  const [{ token }, dispatch] = useAuthContext(); // token refers to users jwtToken 
+  const [{ token }, dispatch] = useAuthContext(); // token refers to users jwtToken
   const [wallet, setWallet] = useState(null);
   const [userId, setUserid] = useState(null);
   const [publicKey, setPublicKey] = useState(null);
@@ -16,12 +16,13 @@ export default function SignIn() {
   const [sig, setSig] = useState(null);
   const [isLoading, setLoading] = useState(false);
 
-  // client should receive its gariClientId 
+  // client should receive its gariClientId
   const gariClientId = "d8817deb-dceb-40a4-a890-21f0286c8fba";
 
   // jwtToken creation part is handled in gari Client backend
   async function getToken(userId) {
     const loginResponse = await axios.get(
+      // https://demo-gari-sdk.vercel.app
       `https://demo-gari-sdk.vercel.app/api/login?userId=${userId}`
     );
     console.log("jwtToken", loginResponse.data);
@@ -36,13 +37,20 @@ export default function SignIn() {
       const publicKey = wallet.publicKey;
       const airdropAmount = 1;
 
-      gariSdk.sdkInitialize(gariClientId) // https://demo-gari-sdk.vercel.app
-      const airdropSignature = await axios.post(`https://demo-gari-sdk.vercel.app/api/airdrop`, {publicKey, airdropAmount}, {
-        headers: {
-          token
-        },
-      });
-      console.log("airdropSignature finally ------------>  ", airdropSignature.data);
+      gariSdk.sdkInitialize(gariClientId); // https://demo-gari-sdk.vercel.app
+      const airdropSignature = await axios.post(
+        `https://demo-gari-sdk.vercel.app/api/airdrop`,
+        { publicKey, airdropAmount },
+        {
+          headers: {
+            token,
+          },
+        }
+      );
+      console.log(
+        "airdropSignature finally ------------>  ",
+        airdropSignature.data
+      );
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -55,29 +63,38 @@ export default function SignIn() {
     event.preventDefault();
     const token = await getToken(userId);
     dispatch({ type: "login", token });
+    // const goingToReplaceToken = await axios.get(
+    //   `http://demo-gari-sdk.vercel.app/api/replaceJwtToken?token=${token}`
+    // );
+    // console.log("newToken ", goingToReplaceToken.data);
   }
 
   async function handleTransaction(event) {
     try {
       event.preventDefault();
       setLoading(true);
-      // partial sign from sender wallet 
+      // partial sign from sender wallet
       const partialSignedTransaction = await gariSdk.transferGariToken(
         token,
         publicKey,
         amount,
         gariClientId
       );
-      const partialSignedEncodedTransaction = partialSignedTransaction.encodedTransaction;
+      const partialSignedEncodedTransaction =
+        partialSignedTransaction.encodedTransaction;
       console.log(
         "partialSignedEncodedTransaction ------> ",
         partialSignedEncodedTransaction
       );
-      const transactionSignature = await axios.post(`https://demo-gari-sdk.vercel.app/api/transaction`, {partialSignedEncodedTransaction }, {
-        headers: {
-          token
-        },
-      });
+      const transactionSignature = await axios.post(
+        `https://demo-gari-sdk.vercel.app/api/transaction`,
+        { partialSignedEncodedTransaction },
+        {
+          headers: {
+            token,
+          },
+        }
+      );
 
       console.log("transactionSignature", transactionSignature);
       setSig(transactionSignature.data);
