@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useAuthContext } from "../AuthContext";
 import ReactLoading from "react-loading";
 import * as gariSdk from "gari";
+import BigNumber from "bignumber.js";
 
 export default function SignIn() {
   const [{ token }, dispatch] = useAuthContext(); // token refers to users jwtToken
@@ -22,7 +23,7 @@ export default function SignIn() {
   // jwtToken creation part is handled in gari Client backend
   async function getToken(userId) {
     const loginResponse = await axios.get(
-      // https://demo-gari-sdk.vercel.app
+      // `http://localhost:3000/api/login?userId=${userId}`
       `https://demo-gari-sdk.vercel.app/api/login?userId=${userId}`
     );
     console.log("jwtToken", loginResponse.data);
@@ -35,12 +36,12 @@ export default function SignIn() {
       setLoading(true);
       console.log(`getAirdrop called`);
       const publicKey = wallet.publicKey;
-      const airdropAmount = 1;
 
-      gariSdk.sdkInitialize(gariClientId); // https://demo-gari-sdk.vercel.app
+      gariSdk.sdkInitialize(gariClientId);
       const airdropSignature = await axios.post(
+        // `http://localhost:3000/api/airdrop`,
         `https://demo-gari-sdk.vercel.app/api/airdrop`,
-        { publicKey, airdropAmount },
+        { publicKey },
         {
           headers: {
             token,
@@ -64,7 +65,7 @@ export default function SignIn() {
     const token = await getToken(userId);
     dispatch({ type: "login", token });
     // const goingToReplaceToken = await axios.get(
-    //   `http://demo-gari-sdk.vercel.app/api/replaceJwtToken?token=${token}`
+    //   `http://localhost:3000/api/replaceJwtToken?token=${token}`
     // );
     // console.log("newToken ", goingToReplaceToken.data);
   }
@@ -73,13 +74,19 @@ export default function SignIn() {
     try {
       event.preventDefault();
       setLoading(true);
+
       // partial sign from sender wallet
+      let lamportAmount = new BigNumber(amount)
+        .multipliedBy(1000000000)
+        .toFixed(); // provide lamport amount
+
+      if (amount <= 0) throw new Error("amount should be greater than 0 ");
       const partialSignedTransaction = await gariSdk.transferGariToken(
         token,
         publicKey,
-        amount,
-        gariClientId
+        lamportAmount
       );
+
       const partialSignedEncodedTransaction =
         partialSignedTransaction.encodedTransaction;
       console.log(
@@ -87,6 +94,7 @@ export default function SignIn() {
         partialSignedEncodedTransaction
       );
       const transactionSignature = await axios.post(
+        // `http://localhost:3000/api/transaction`,
         `https://demo-gari-sdk.vercel.app/api/transaction`,
         { partialSignedEncodedTransaction },
         {
@@ -109,8 +117,10 @@ export default function SignIn() {
     try {
       setLoading(true);
       const walletRes = await gariSdk.createWalletOrGetWallet(token);
+      walletRes.balance = new BigNumber(walletRes.balance)
+        .div(1000000000)
+        .toFixed();
       setWallet(walletRes);
-      console.log("wallet", wallet);
       setLoading(false);
     } catch (error) {
       setLoading(false);

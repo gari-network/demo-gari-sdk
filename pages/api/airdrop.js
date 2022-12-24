@@ -1,4 +1,5 @@
 import * as gariSdk from "gari";
+import BigNumber from 'bignumber.js';
 
 const gariClientId = "d8817deb-dceb-40a4-a890-21f0286c8fba";
 const gariSecretKey = "d41c1ac7-7671-41fa-94a8-ea79b67d01ea";
@@ -10,11 +11,11 @@ const fromWalletPublicKey=`FbD1J7ptwgSD8eCsyEm2TDVLnFwVhYRWkc2ingf6mn1n`
 
 export default async function handler(req, res) {
   const publicKey = req.body.publicKey;
-  const airdropAmount = req.body.airdropAmount;
+  // airdrop amount should be decided by ludo backend (e.g 1 gari)
+  const airdropAmount = new BigNumber(1).multipliedBy(1000000000).toFixed();
   const token = req.headers.token;
 
-  gariSdk.sdkInitialize(gariClientId, gariSecretKey)
-  
+  gariSdk.sdkInitialize(gariClientId, gariSecretKey);
   const signature = await gariSdk.airDrop(
     publicKey,
     airdropAmount,
