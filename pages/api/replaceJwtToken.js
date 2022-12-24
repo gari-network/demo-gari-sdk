@@ -40,5 +40,5 @@ export default async function handler(req, res) {
   });
   const newToken = await jose.JWS.createSign(opt, key).update(payload).final();
   // console.log("newToken ", newToken);
-  res.json(newToken);
+  res.json(newToken,userId);
 }
