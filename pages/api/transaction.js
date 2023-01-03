@@ -7,8 +7,11 @@ export default async function handler(req, res) {
   const partialSignedEncodedTransaction =
     req.body.partialSignedEncodedTransaction;
   const token = req.headers.token;
-  
-  gariSdk.sdkInitialize(gariClientId, gariSecretKey);
+
+  // estract sender & receiver details from partial signaed decoded tranmsactio  
+
+  gariSdk.sdkInitialize(gariClientId, gariSecretKey); 
+  // after validation 
   const transactionResponse = await gariSdk.initiateTransaction(
     partialSignedEncodedTransaction,
     token,
