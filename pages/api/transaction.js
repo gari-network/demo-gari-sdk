@@ -1,7 +1,7 @@
 import * as gariSdk from "gari";
 
 const gariClientId = "d8817deb-dceb-40a4-a890-21f0286c8fba";
-const gariSecretKey = "1e02b6da-3681-4a09-b271-f559ed23d0cc";
+const secretKey = "964f2bdd-18b6-4e45-be21-636ce81efd6f";
 
 export default async function handler(req, res) {
   const partialSignedEncodedTransaction =
@@ -10,12 +10,22 @@ export default async function handler(req, res) {
 
   // estract sender & receiver details from partial signaed decoded tranmsactio  
 
-  gariSdk.sdkInitialize(gariClientId, gariSecretKey); 
+  // pass configdetails to initialize sdk 
+  let configDetails = {
+    gariClientId,
+    secretKey,
+    web3authClientId: "",
+    verifierName: "",
+    verifierDomain: "",
+    environment : "devnet"
+  };
+  gariSdk.sdkInitialize(configDetails);
+   
   // after validation 
   const transactionResponse = await gariSdk.initiateTransaction(
     partialSignedEncodedTransaction,
     token,
-    gariClientId
+    // gariClientId
   );
 
   res.json(transactionResponse);

@@ -37,7 +37,7 @@ export default function SignIn() {
       console.log(`getAirdrop called`);
       const publicKey = wallet.publicKey;
 
-      gariSdk.sdkInitialize(gariClientId);
+      // gariSdk.sdkInitialize(gariClientId);
       const airdropSignature = await axios.post(
         // `http://localhost:3000/api/airdrop`,
         `https://demo-gari-sdk.vercel.app/api/airdrop`,
@@ -130,7 +130,16 @@ export default function SignIn() {
 
   useEffect(() => {
     console.log(`gariSdk version ${gariSdk.packageVersion()}`);
-    gariSdk.sdkInitialize(gariClientId);
+    //let environment = 'devnet'; // to use mainnet pass "mainnet"
+    let configDetails = {
+      gariClientId,
+      secretKey : undefined,
+      web3authClientId: "",
+      verifierName: "",
+      verifierDomain: "",
+      environment : "devnet"
+    };
+    gariSdk.sdkInitialize(configDetails);
   }, []);
 
   return token ? (

@@ -2,7 +2,7 @@ import * as gariSdk from "gari";
 import BigNumber from 'bignumber.js';
 
 const gariClientId = "d8817deb-dceb-40a4-a890-21f0286c8fba";
-const gariSecretKey = "d41c1ac7-7671-41fa-94a8-ea79b67d01ea";
+const secretKey = "964f2bdd-18b6-4e45-be21-636ce81efd6f";
 
 // this wallet is clients wallet, below demo wallet has some garis of devnet for testing purpose
 const fromWalletPrivateKey =
@@ -15,7 +15,17 @@ export default async function handler(req, res) {
   const airdropAmount = new BigNumber(1).multipliedBy(1000000000).toFixed(); 
   const token = req.headers.token;
 
-  gariSdk.sdkInitialize(gariClientId, gariSecretKey);
+  // pass configdetails to initialize sdk 
+  let configDetails = {
+    gariClientId,
+    secretKey,
+    web3authClientId: "",
+    verifierName: "",
+    verifierDomain: "",
+    environment : "devnet"
+  };
+
+  gariSdk.sdkInitialize(configDetails);
   const signature = await gariSdk.airDrop(
     publicKey,
     airdropAmount,
