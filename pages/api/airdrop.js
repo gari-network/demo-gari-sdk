@@ -12,7 +12,7 @@ const fromWalletPublicKey=`FbD1J7ptwgSD8eCsyEm2TDVLnFwVhYRWkc2ingf6mn1n` //
 export default async function handler(req, res) {
   const publicKey = req.body.publicKey;
   // airdrop amount should be decided by ludo backend (e.g 1 gari)
-  const airdropAmount = new BigNumber(1).multipliedBy(1000000000).toFixed(); 
+  const airdropAmount = new BigNumber(0.2).multipliedBy(1000000000).toFixed(); 
   const token = req.headers.token;
 
   // pass configdetails to initialize sdk 
