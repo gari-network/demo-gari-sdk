@@ -17,7 +17,7 @@ export default function SignIn() {
   const [sig, setSig] = useState(null);
   const [isLoading, setLoading] = useState(false);
 
-  // client should receive its gariClientId
+  // client should receive its gariClientId by registering itself with gari-sdk 
   const gariClientId = "d8817deb-dceb-40a4-a890-21f0286c8fba";
 
   // jwtToken creation part is handled in gari Client backend
@@ -39,8 +39,8 @@ export default function SignIn() {
 
       // gariSdk.sdkInitialize(gariClientId);
       const airdropSignature = await axios.post(
-        // `http://localhost:3000/api/airdrop`,
-        `https://demo-gari-sdk.vercel.app/api/airdrop`,
+        `http://localhost:3000/api/airdrop`,
+        // `https://demo-gari-sdk.vercel.app/api/airdrop`,
         { publicKey },
         {
           headers: {
@@ -76,15 +76,20 @@ export default function SignIn() {
       setLoading(true);
 
       // partial sign from sender wallet
-      let lamportAmount = new BigNumber(amount)
+      if (amount <= 0) throw new Error("amount should be greater than 0 ");
+      let transferAmount = new BigNumber(amount)
         .multipliedBy(1000000000)
         .toFixed(); // provide lamport amount
 
-      if (amount <= 0) throw new Error("amount should be greater than 0 ");
+      const transactionData = {
+        receiverWalletPublicKey : publicKey,
+        transferAmount,
+        transferTokenName : 'gari',
+        feepayerWalletPublicKey : 'FbD1J7ptwgSD8eCsyEm2TDVLnFwVhYRWkc2ingf6mn1n' // ludo publicKey 
+      } 
       const partialSignedTransaction = await gariSdk.transferGariToken(
+        transactionData,
         token,
-        publicKey,
-        lamportAmount
       );
 
       const partialSignedEncodedTransaction =
@@ -94,9 +99,9 @@ export default function SignIn() {
         partialSignedEncodedTransaction
       );
       const transactionSignature = await axios.post(
-        // `http://localhost:3000/api/transaction`,
-        `https://demo-gari-sdk.vercel.app/api/transaction`,
-        { partialSignedEncodedTransaction },
+        `http://localhost:3000/api/transaction`,
+        // `https://demo-gari-sdk.vercel.app/api/transaction`,
+        { partialSignedEncodedTransaction, transactionData },
         {
           headers: {
             token,
