@@ -1,5 +1,5 @@
 ## Description
-This is demo application for clients who wants to use "gari" npm package.
+This is a demo application for clients who want to use the "gari" npm package.
 
 This application demos below functionalities:
 - dummy login with jwt-token format supported by web3 auth
