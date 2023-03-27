@@ -1,14 +1,14 @@
 ## Description
-This is demo application for clients who wants to use "gari" npm package.
+This demo application is for clients who want to use the "gari" npm package.
 
 This application demos below functionalities:
-- dummy login with jwt-token format supported by web3 auth
-- create or get wallet using "createWalletOrGetWallet" method from "gari" package
+- dummy login with a jwt-token format supported by web3 auth
+- create or get a wallet using the "createWalletOrGetWallet" method from the "gari" package
 - receive airdrop
-- Transfer gari token to another user(wallet) 
+- Transfer the gari token to another user(wallet) 
 
 
-Backend has below apis:
+The backend has below following apis:
 - login
 - airdrop
 - transaction
