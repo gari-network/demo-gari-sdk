@@ -23,8 +23,8 @@ export default function SignIn() {
   // jwtToken creation part is handled in gari Client backend
   async function getToken(userId) {
     const loginResponse = await axios.get(
-      // `http://localhost:3000/api/login?userId=${userId}`
-      `https://demo-gari-sdk.vercel.app/api/login?userId=${userId}`
+      `http://localhost:3000/api/login?userId=${userId}`
+      // `https://demo-gari-sdk.vercel.app/api/login?userId=${userId}`
     );
     console.log("jwtToken", loginResponse.data);
     return loginResponse.data;
@@ -80,41 +80,70 @@ export default function SignIn() {
       let transferAmount = new BigNumber(amount)
         .multipliedBy(1000000000)
         .toFixed(); // provide lamport amount
+      let comissionAmount = new BigNumber(0.1).multipliedBy(1000000000).toFixed() // let comission amount be 0.1 
+
+      // first we need to verify whether receiver wallet is our user ? 
+      const isMyUser = await gariSdk.verifyPublicKey(publicKey, token);
 
       const transactionData = {
         receiverWalletPublicKey : publicKey,
         transferAmount,
         transferTokenName : 'gari',
-        feepayerWalletPublicKey : 'FbD1J7ptwgSD8eCsyEm2TDVLnFwVhYRWkc2ingf6mn1n' // ludo publicKey 
+        feepayerWalletPublicKey : 'FbD1J7ptwgSD8eCsyEm2TDVLnFwVhYRWkc2ingf6mn1n', // ludo publicKey 
+        comissionWalletPublicKey : 'FbD1J7ptwgSD8eCsyEm2TDVLnFwVhYRWkc2ingf6mn1n', // optional ? if client needs comission from its users 
+        comissionAmount // must be in lamports 
       } 
-      const partialSignedTransaction = await gariSdk.transferGariToken(
-        transactionData,
-        token,
-      );
+      let partialSignedTransaction;
+      let partialSignedEncodedTransaction;
+      let transactionSignature;
+      if(isMyUser) {
+        partialSignedTransaction = await gariSdk.transferGariToken(
+          transactionData,
+          token,
+        );
+  
+        partialSignedEncodedTransaction =
+          partialSignedTransaction.encodedTransaction;
+        console.log(
+          "partialSignedEncodedTransaction ------> ",
+          partialSignedEncodedTransaction
+        );
 
-      const partialSignedEncodedTransaction =
-        partialSignedTransaction.encodedTransaction;
-      console.log(
-        "partialSignedEncodedTransaction ------> ",
-        partialSignedEncodedTransaction
-      );
-      const transactionSignature = await axios.post(
-        `http://localhost:3000/api/transaction`,
-        // `https://demo-gari-sdk.vercel.app/api/transaction`,
-        { partialSignedEncodedTransaction, transactionData },
-        {
-          headers: {
-            token,
-          },
-        }
-      );
+        transactionSignature = await axios.post(
+          `http://localhost:3000/api/transaction`,
+          // `https://demo-gari-sdk.vercel.app/api/transaction`,
+          { partialSignedEncodedTransaction, transactionData },
+          {
+            headers: {
+              token,
+            },
+          }
+        );
+      } else {
+        partialSignedTransaction = await gariSdk.transferGariTokenExternal(transactionData, token);
+        partialSignedEncodedTransaction = partialSignedTransaction.encodedTransaction;
+        console.log(
+          "partialSignedEncodedTransaction ------> ",
+          partialSignedEncodedTransaction
+        );
 
-      console.log("transactionSignature", transactionSignature);
+        transactionSignature = await axios.post(
+          `http://localhost:3000/api/transactionExternal`,
+          // `https://demo-gari-sdk.vercel.app/api/transaction`,
+          { partialSignedEncodedTransaction, transactionData },
+          {
+            headers: {
+              token,
+            },
+          }
+        );
+      }
+
       setSig(transactionSignature.data);
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      console.log("error", error);
+      console.log("error in handle transaction demo app frontend ", error);
     }
   }
 
